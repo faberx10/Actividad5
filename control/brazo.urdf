@@ -1,0 +1,176 @@
+<?xml version="1.0"?>
+<robot name="robot_con_pinza">
+
+  <!-- ============ MATERIALES ============ -->
+  <material name="base_material">
+    <color rgba="0.3 0.3 0.3 1"/>  <!-- Gris oscuro -->
+  </material>
+  <material name="brazo1_material">
+    <color rgba="0.2 0.6 0.8 1"/>  <!-- Azul celeste -->
+  </material>
+  <material name="brazo2_material">
+    <color rgba="0.9 0.5 0.1 1"/>  <!-- Naranja -->
+  </material>
+  <material name="pinza_material">
+    <color rgba="0.8 0.2 0.2 1"/>  <!-- Rojo -->
+  </material>
+  <material name="dedo_material">
+    <color rgba="0.9 0.9 0.9 1"/>  <!-- Blanco/gris claro -->
+  </material>
+  <material name="efector_material">
+    <color rgba="0.0 0.8 0.0 1"/>  <!-- Verde -->
+  </material>
+
+  <!-- ============ LINK 0: BASE ============ -->
+  <link name="base_link">
+    <visual>
+      <geometry>
+        <cylinder length="0.15" radius="0.25"/>
+      </geometry>
+      <origin xyz="0 0 0.075"/>
+      <material name="base_material"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="0.15" radius="0.25"/>
+      </geometry>
+      <origin xyz="0 0 0.075"/>
+    </collision>
+  </link>
+
+  <!-- ============ JOINT 1: BASE - BRAZO1 ============ -->
+  <joint name="joint_1" type="revolute">
+    <parent link="base_link"/>
+    <child link="brazo1_link"/>
+    <origin xyz="0 0 0.15" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-2.5" upper="2.5" effort="100" velocity="1.5"/>
+    <dynamics damping="0.1" friction="0.05"/>
+  </joint>
+
+  <!-- ============ LINK 1: BRAZO INFERIOR ============ -->
+  <link name="brazo1_link">
+    <visual>
+      <geometry>
+        <cylinder length="0.35" radius="0.06"/>
+      </geometry>
+      <origin xyz="0 0 0.175"/>
+      <material name="brazo1_material"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="0.35" radius="0.06"/>
+      </geometry>
+      <origin xyz="0 0 0.175"/>
+    </collision>
+  </link>
+
+  <!-- ============ JOINT 2: BRAZO1 - BRAZO2 ============ -->
+  <joint name="joint_2" type="revolute">
+    <parent link="brazo1_link"/>
+    <child link="brazo2_link"/>
+    <origin xyz="0 0 0.35" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-2.0" upper="2.0" effort="80" velocity="1.2"/>
+    <dynamics damping="0.1" friction="0.05"/>
+  </joint>
+
+  <!-- ============ LINK 2: BRAZO SUPERIOR ============ -->
+  <link name="brazo2_link">
+    <visual>
+      <geometry>
+        <cylinder length="0.30" radius="0.05"/>
+      </geometry>
+      <origin xyz="0 0 0.15"/>
+      <material name="brazo2_material"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="0.30" radius="0.05"/>
+      </geometry>
+      <origin xyz="0 0 0.15"/>
+    </collision>
+  </link>
+
+  <!-- ============ JOINT 3: BRAZO2 - PINZA (APERTURA) ============ -->
+  <joint name="joint_gripper" type="prismatic">
+    <parent link="brazo2_link"/>
+    <child link="gripper_base"/>
+    <origin xyz="0 0 0.30" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="0.0" upper="0.15" effort="30" velocity="0.5"/>
+    <dynamics damping="0.2" friction="0.1"/>
+  </joint>
+
+  <!-- ============ LINK 3: BASE DE LA PINZA ============ -->
+  <link name="gripper_base">
+    <visual>
+      <geometry>
+        <box size="0.08 0.12 0.04"/>
+      </geometry>
+      <origin xyz="0 0 0.02"/>
+      <material name="pinza_material"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.08 0.12 0.04"/>
+      </geometry>
+      <origin xyz="0 0 0.02"/>
+    </collision>
+  </link>
+
+  <!-- ============ LINK 4: DEDO IZQUIERDO ============ -->
+  <link name="dedo_izquierdo">
+    <visual>
+      <geometry>
+        <box size="0.03 0.08 0.12"/>
+      </geometry>
+      <origin xyz="-0.055 0 0.06"/>
+      <material name="dedo_material"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.03 0.08 0.12"/>
+      </geometry>
+      <origin xyz="-0.055 0 0.06"/>
+    </collision>
+  </link>
+
+  <!-- ============ JOINT 4: PINZA - DEDO IZQUIERDO ============ -->
+  <joint name="joint_dedo_izq" type="prismatic">
+    <parent link="gripper_base"/>
+    <child link="dedo_izquierdo"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <axis xyz="-1 0 0"/>
+    <limit lower="0.0" upper="0.05" effort="20" velocity="0.5"/>
+    <dynamics damping="0.1" friction="0.1"/>
+  </joint>
+
+  <!-- ============ LINK 5: DEDO DERECHO ============ -->
+  <link name="dedo_derecho">
+    <visual>
+      <geometry>
+        <box size="0.03 0.08 0.12"/>
+      </geometry>
+      <origin xyz="0.055 0 0.06"/>
+      <material name="dedo_material"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.03 0.08 0.12"/>
+      </geometry>
+      <origin xyz="0.055 0 0.06"/>
+    </collision>
+  </link>
+
+  <!-- ============ JOINT 5: PINZA - DEDO DERECHO ============ -->
+  <joint name="joint_dedo_der" type="prismatic">
+    <parent link="gripper_base"/>
+    <child link="dedo_derecho"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <axis xyz="1 0 0"/>
+    <limit lower="0.0" upper="0.05" effort="20" velocity="0.5"/>
+    <dynamics damping="0.1" friction="0.1"/>
+  </joint>
+
+</robot>

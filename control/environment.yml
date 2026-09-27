@@ -1,0 +1,13 @@
+# Entorno de conda para la Actividad 5 (PyBullet ya compilado desde conda-forge)
+# Crear:   conda env create -f environment.yml
+# Activar: conda activate brazo
+name: brazo
+channels:
+  - conda-forge
+  - nodefaults
+dependencies:
+  - python=3.12
+  - pybullet
+  - pyserial
+  - matplotlib
+  - numpy
