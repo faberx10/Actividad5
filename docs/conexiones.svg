@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 940 500" width="940" height="500" font-family="Segoe UI, Arial, sans-serif">
+  <rect x="0" y="0" width="940" height="500" rx="14" fill="#ffffff"/>
+  <text x="470" y="32" text-anchor="middle" font-size="18" font-weight="700" fill="#111827">Diagrama de conexiones – Actividad 5</text>
+
+  <!-- PC -->
+  <rect x="20" y="190" width="170" height="110" rx="10" fill="#eef2ff" stroke="#4338ca" stroke-width="2"/>
+  <text x="105" y="218" text-anchor="middle" font-size="15" font-weight="700" fill="#1e1b4b">PC / Portátil</text>
+  <text x="105" y="240" text-anchor="middle" font-size="12" fill="#312e81">Python 3.12 (conda)</text>
+  <text x="105" y="258" text-anchor="middle" font-size="12" fill="#312e81">PyBullet + brazo.urdf</text>
+  <text x="105" y="276" text-anchor="middle" font-size="12" fill="#312e81">brazo_control.py</text>
+  <line x1="190" y1="245" x2="260" y2="245" stroke="#4b5563" stroke-width="4"/>
+  <text x="225" y="233" text-anchor="middle" font-size="11" fill="#374151">USB</text>
+  <text x="225" y="267" text-anchor="middle" font-size="10" fill="#374151">COM5</text>
+  <text x="225" y="280" text-anchor="middle" font-size="10" fill="#374151">115200</text>
+
+  <!-- ESP32 -->
+  <rect x="260" y="60" width="180" height="420" rx="10" fill="#1f2937"/>
+  <text x="350" y="92" text-anchor="middle" font-size="15" font-weight="700" fill="#f9fafb">ESP32</text>
+  <text x="350" y="110" text-anchor="middle" font-size="11" fill="#d1d5db">DevKit 30 pines</text>
+  <text x="350" y="240" text-anchor="middle" font-size="11" fill="#9ca3af">ADC1 12 bits</text>
+  <text x="350" y="256" text-anchor="middle" font-size="11" fill="#9ca3af">esp_timer 50 Hz</text>
+  <text x="350" y="272" text-anchor="middle" font-size="11" fill="#9ca3af">UART0 → tramas</text>
+  <g font-size="12" font-weight="700" fill="#fde68a" text-anchor="end">
+    <text x="434" y="124">GPIO34</text>
+    <text x="434" y="214">GPIO35</text>
+    <text x="434" y="304">GPIO32</text>
+    <text x="434" y="384">GPIO18</text>
+    <text x="434" y="444">GPIO19</text>
+  </g>
+
+  <!-- Potenciómetros: y = 120, 210, 300 -->
+  <g id="pots" stroke="#111827" stroke-width="2" fill="none">
+    <!-- pot 1 -->
+    <line x1="440" y1="120" x2="578" y2="120"/>
+    <polygon points="578,114 578,126 590,120" fill="#111827"/>
+    <polyline points="600,86 600,90 592,95 608,103 592,111 608,119 592,127 608,135 592,143 600,148 600,154"/>
+    <!-- pot 2 -->
+    <line x1="440" y1="210" x2="578" y2="210"/>
+    <polygon points="578,204 578,216 590,210" fill="#111827"/>
+    <polyline points="600,176 600,180 592,185 608,193 592,201 608,209 592,217 608,225 592,233 600,238 600,244"/>
+    <!-- pot 3 -->
+    <line x1="440" y1="300" x2="578" y2="300"/>
+    <polygon points="578,294 578,306 590,300" fill="#111827"/>
+    <polyline points="600,266 600,270 592,275 608,283 592,291 608,299 592,307 608,315 592,323 600,328 600,334"/>
+  </g>
+  <g font-size="10" font-weight="700" text-anchor="middle">
+    <text x="625" y="92" fill="#b91c1c" text-anchor="start">3V3</text><text x="625" y="160" fill="#111827" text-anchor="start">GND</text>
+    <text x="625" y="182" fill="#b91c1c" text-anchor="start">3V3</text><text x="625" y="250" fill="#111827" text-anchor="start">GND</text>
+    <text x="625" y="272" fill="#b91c1c" text-anchor="start">3V3</text><text x="625" y="340" fill="#111827" text-anchor="start">GND</text>
+  </g>
+  <g font-size="11" fill="#374151">
+    <text x="520" y="112" text-anchor="middle">cursor</text>
+    <text x="520" y="202" text-anchor="middle">cursor</text>
+    <text x="520" y="292" text-anchor="middle">cursor</text>
+  </g>
+  <g>
+    <text x="690" y="116" font-size="12" font-weight="700" fill="#1d4ed8">Pot. 10 kΩ → joint_1</text>
+    <text x="690" y="132" font-size="11" fill="#4b5563">giro de la base (±2.5 rad)</text>
+    <text x="690" y="206" font-size="12" font-weight="700" fill="#1d4ed8">Pot. 10 kΩ → joint_2</text>
+    <text x="690" y="222" font-size="11" fill="#4b5563">codo (±2.0 rad)</text>
+    <text x="690" y="296" font-size="12" font-weight="700" fill="#1d4ed8">Pot. 10 kΩ → joint_gripper</text>
+    <text x="690" y="312" font-size="11" fill="#4b5563">subir / bajar pinza (0–0.15 m)</text>
+  </g>
+
+  <!-- Pulsadores: y = 380, 440 -->
+  <g stroke="#111827" stroke-width="2" fill="none">
+    <line x1="440" y1="380" x2="580" y2="380"/>
+    <circle cx="584" cy="380" r="4" fill="#ffffff"/>
+    <circle cx="626" cy="380" r="4" fill="#ffffff"/>
+    <line x1="584" y1="368" x2="626" y2="368"/>
+    <line x1="605" y1="368" x2="605" y2="358"/>
+    <line x1="630" y1="380" x2="660" y2="380"/>
+    <line x1="660" y1="380" x2="660" y2="392"/>
+    <line x1="650" y1="392" x2="670" y2="392"/><line x1="654" y1="397" x2="666" y2="397"/><line x1="658" y1="402" x2="662" y2="402"/>
+
+    <line x1="440" y1="440" x2="580" y2="440"/>
+    <circle cx="584" cy="440" r="4" fill="#ffffff"/>
+    <circle cx="626" cy="440" r="4" fill="#ffffff"/>
+    <line x1="584" y1="428" x2="626" y2="428"/>
+    <line x1="605" y1="428" x2="605" y2="418"/>
+    <line x1="630" y1="440" x2="660" y2="440"/>
+    <line x1="660" y1="440" x2="660" y2="452"/>
+    <line x1="650" y1="452" x2="670" y2="452"/><line x1="654" y1="457" x2="666" y2="457"/><line x1="658" y1="462" x2="662" y2="462"/>
+  </g>
+  <g font-size="10" fill="#111827" font-weight="700">
+    <text x="676" y="398">GND</text><text x="676" y="458">GND</text>
+  </g>
+  <g>
+    <text x="720" y="376" font-size="12" font-weight="700" fill="#15803d">Pulsador 1 → pinza</text>
+    <text x="720" y="392" font-size="11" fill="#4b5563">abre / cierra los dedos</text>
+    <text x="720" y="436" font-size="12" font-weight="700" fill="#15803d">Pulsador 2 → rutina</text>
+    <text x="720" y="452" font-size="11" fill="#4b5563">inicia / cancela la prueba automática</text>
+  </g>
+  <text x="690" y="488" text-anchor="middle" font-size="10" fill="#6b7280">Pulsadores con pull-up interno (INPUT_PULLUP): suelto = HIGH, presionado = LOW</text>
+</svg>

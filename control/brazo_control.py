@@ -69,6 +69,7 @@ class EnlaceSerial(threading.Thread):
         self.lock = threading.Lock()
         self.corriendo = True
         self.muestra = None           # última trama válida (dict)
+        self.pendientes = []          # todas las tramas válidas aún no registradas
         self.t_muestra = 0.0
         self.tramas_ok = 0
         self.tramas_malas = 0
@@ -154,6 +155,8 @@ class EnlaceSerial(threading.Thread):
                             "pot_pinza": pp, "pinza": pinza, "rutina": rutina,
                             "t_llegada": t}
             self.t_muestra = t
+            self.pendientes.append((self.muestra, self.tramas_ok, self.tramas_malas,
+                                    self.tramas_perdidas))
 
     def estadisticas(self):
         with self.lock:
@@ -299,7 +302,6 @@ def main():
     pos_anterior = None
     contador_rutina_prev = None
     rutina_inicio = None
-    seq_prev = None
     obj = {"joint_1": 0.0, "joint_2": 0.0, "joint_gripper": 0.0, "dedos": DEDOS_ABIERTOS}
 
     try:
@@ -361,21 +363,21 @@ def main():
             mover(robot, juntas, "joint_dedo_der", obj["dedos"])
             p.stepSimulation()
 
-            # ---- 4) Registro (una fila por trama nueva) ----
-            if enlace and muestra and muestra["seq"] != seq_prev:
-                seq_prev = muestra["seq"]
-                reales = [p.getJointState(robot, juntas[n]["id"])[0]
-                          for n in ("joint_1", "joint_2", "joint_gripper", "joint_dedo_izq")]
+            # ---- 4) Registro: una fila por CADA trama recibida ----
+            if enlace:
                 with enlace.lock:
+                    nuevas, enlace.pendientes = enlace.pendientes, []
                     rtt = enlace.rtt_nuevo
                     enlace.rtt_nuevo = None
-                    cont = (enlace.tramas_ok, enlace.tramas_malas, enlace.tramas_perdidas)
-                log.writerow([f"{muestra['t_llegada'] - t0:.4f}", muestra["seq"], muestra["t_esp"], muestra["pot_base"],
-                              muestra["pot_codo"], muestra["pot_pinza"], muestra["pinza"],
-                              int(en_rutina), f"{obj['joint_1']:.4f}", f"{obj['joint_2']:.4f}",
-                              f"{obj['joint_gripper']:.4f}", f"{obj['dedos']:.4f}",
-                              *[f"{v:.4f}" for v in reales], *cont,
-                              f"{rtt:.2f}" if rtt is not None else ""])
+                if nuevas:
+                    reales = [f"{p.getJointState(robot, juntas[n]['id'])[0]:.4f}"
+                              for n in ("joint_1", "joint_2", "joint_gripper", "joint_dedo_izq")]
+                    objetivos = [f"{obj[k]:.4f}" for k in ("joint_1", "joint_2", "joint_gripper", "dedos")]
+                    for k, (m, ok, malas, perdidas) in enumerate(nuevas):
+                        log.writerow([f"{m['t_llegada'] - t0:.4f}", m["seq"], m["t_esp"],
+                                      m["pot_base"], m["pot_codo"], m["pot_pinza"], m["pinza"],
+                                      int(en_rutina), *objetivos, *reales, ok, malas, perdidas,
+                                      f"{rtt:.2f}" if (rtt is not None and k == 0) else ""])
 
             # ---- 5) Trayectoria del efector (línea verde que se desvanece) ----
             if t - t_traza > 0.05:
