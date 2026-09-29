@@ -160,13 +160,17 @@ flowchart TD
 6. Si el ESP32 se desconecta, aparece **SIN DATOS** y el robot se queda en su última posición.
 7. Al cerrar la ventana, la sesión queda guardada en `control/logs/`, y `analizar_log.py` genera las gráficas de validación.
 
-### 2.2 Captura de la ejecución
+### 2.2 Video de evidencia
+
+https://github.com/user-attachments/assets/03cba542-221a-41d5-8b0c-a106b4b26417
+
+### 2.3 Captura de la ejecución
 
 ![Ejecución en PyBullet](docs/captura_pybullet.png)
 
 *Captura tomada unos segundos después de arrancar el script: el indicador ya muestra "ESP32 OK", 0 tramas con error y 0 perdidas. En ese primer instante, la frecuencia y el RTT todavía incluyen las tramas que estaban acumuladas en el búfer al abrir el puerto. Los valores estables de la sesión completa están en la sección 3.8.*
 
-### 2.3 Validación de la comunicación en tiempo real
+### 2.4 Validación de la comunicación en tiempo real
 
 Gráficas generadas con `analizar_log.py` a partir de la sesión real ([`docs/evidencias/sesion_20260927_124655.csv`](docs/evidencias/sesion_20260927_124655.csv)):
 
